@@ -13,7 +13,7 @@ $currentuser = $env:USERNAME
 $homepath = "C:\Users\$currentuser\documents"
 $filename = "$homepath\MS_Monthly_CVE.csv"
 $filename_raw = "$homepath\MS_Monthly_Raw.csv"
-$APIKey = 'ec33d5d2f8d4458ab17b58d62f111bee'
+$APIKey = 'your_api_key_here'
 
 # hardcoded month
 $monthofInterest = '2019-Jul'
