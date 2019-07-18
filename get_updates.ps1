@@ -4,7 +4,7 @@
 # all credit goes to Jana for saving me about a million hours
 
 # special thanks to Tim Curwick [Twitter: @MadWPowershell] [Blog: https://www.madwithpowershell.com/2014/10/calculating-patch-tuesday-with.html]
-# for date calcualtion business, which never fails to totally confuse me
+# for date calculation business, which never fails to totally confuse me
 
 
 #region initialise
