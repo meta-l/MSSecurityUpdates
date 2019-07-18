@@ -3,6 +3,13 @@
 # https://sqljana.wordpress.com/2017/08/31/powershell-get-security-updates-list-from-microsoft-by-monthproductkbcve-with-api/
 # all credit goes to Jana for saving me about a million hours
 
+[cmdletbinding()]
+
+Param(
+    [Parameter(Mandatory=$true,HelpMessage="Enter YYYY-MMM, example 2019-Jul")]
+    [ValidateNotNullOrEmpty()]
+    [string]$monthOfInterest
+)
 
 #region initialise
 
@@ -14,9 +21,6 @@ $homepath = "C:\Users\$currentuser\documents"
 $filename = "$homepath\MS_Monthly_CVE.csv"
 $filename_raw = "$homepath\MS_Monthly_Raw.csv"
 $APIKey = 'your_api_key_here'
-
-# hardcoded month
-$monthofInterest = '2019-Jul'
 
 # import modules. Must be already saved in C:\Users\$env:USERNAME\Documents\Windows PowerShell\Modules
 import-module MSrcSecurityUpdates
