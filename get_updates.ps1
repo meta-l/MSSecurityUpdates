@@ -3,13 +3,9 @@
 # https://sqljana.wordpress.com/2017/08/31/powershell-get-security-updates-list-from-microsoft-by-monthproductkbcve-with-api/
 # all credit goes to Jana for saving me about a million hours
 
-[cmdletbinding()]
+# special thanks to Tim Curwick [Twitter: @MadWPoweshell] [Blog: https://www.madwithpowershell.com/2014/10/calculating-patch-tuesday-with.html]
+# for date calcualtion business, which never fails to totally confuse me
 
-Param(
-    [Parameter(Mandatory=$true,HelpMessage="Enter YYYY-MMM, example 2019-Jul")]
-    [ValidateNotNullOrEmpty()]
-    [string]$monthOfInterest
-)
 
 #region initialise
 
@@ -20,7 +16,8 @@ $currentuser = $env:USERNAME
 $homepath = "C:\Users\$currentuser\documents"
 $filename = "$homepath\MS_Monthly_CVE.csv"
 $filename_raw = "$homepath\MS_Monthly_Raw.csv"
-$APIKey = 'your_api_key_here'
+$APIKey = 'ec33d5d2f8d4458ab17b58d62f111bee'
+
 
 # import modules. Must be already saved in C:\Users\$env:USERNAME\Documents\Windows PowerShell\Modules
 import-module MSrcSecurityUpdates
@@ -34,9 +31,28 @@ Set-MSRCApiKey -ApiKey $APIKey
 #endregion initialise
 
 
+# generates the correct date format for Get-MsrcCvrfDocument to pull the current patch
+function getMonthOfInterest {
+    $basedate = (get-date -day 12).Date
+    $patchtues = $basedate.AddDays(2 - [int]$basedate.DayOfWeek)
+    $patchtues = $patchtues.AddHours(20)
+
+    if ( ((get-date).Date) -lt $patchtues) {
+        $patchmonth = (get-date -format "yyyy-MMM")
+        return $patchmonth
+    }
+    else {
+        $patchmonth = $basedate.ToString("yyyy-MMM")
+        return $patchmonth
+    }
+}
+
+
 #region process
 
-write-host "{*} Downloading monthly rollup data from Microsoft. Please wait..." -ForegroundColor Green
+$monthOfInterest = getMonthOfInterest
+
+write-host "`n{*} Downloading $monthOfInterest rollup patch information from Microsoft. Please wait..." -ForegroundColor Green
 
 $reportdata = Get-MsrcCvrfDocument -ID  $MonthOfInterest | Get-MsrcCvrfAffectedSoftware
 
@@ -62,6 +78,7 @@ $reportdata = Get-MsrcCvrfDocument -ID  $MonthOfInterest | Get-MsrcCvrfAffectedS
 
 
 # these hashtables will hold specific associations as key and value as csv
+# mostly kept for reference
 [hashtable]$cveByProductHash = @{}
 [hashtable]$kbByProductHash = @{}
 [hashtable]$productByKBHash = @{}
@@ -70,6 +87,7 @@ $reportdata = Get-MsrcCvrfDocument -ID  $MonthOfInterest | Get-MsrcCvrfAffectedS
 [hashtable]$productByCVEHash = @{}
  
 # these hashtables will hold all data values as objects by the keys
+# mostly kept for reference
 [hashtable]$cveByProductHashData = @{}
 [hashtable]$kbByProductHashData = @{}
 [hashtable]$productByKBHashData = @{}
@@ -113,11 +131,11 @@ switch ($resultType)
 
 
 # unfiltered output file for data integrity checking
-write-host "{*} Producing raw csv...(for sanity checking)" -ForegroundColor Green
+write-host "`n{*} Producing raw csv...(for sanity checking)" -ForegroundColor Green
 $reportData | Export-Csv $filename_raw
 
 # filtered on CVE
-Write-Host "{*} Producing consolidated csv..." -ForegroundColor Green
+Write-Host "`n{*} Producing consolidated csv..." -ForegroundColor Green
 $kbByCVEHashData.Values | Export-Csv $filename
 
 #endregion process
