@@ -3,7 +3,7 @@
 # https://sqljana.wordpress.com/2017/08/31/powershell-get-security-updates-list-from-microsoft-by-monthproductkbcve-with-api/
 # all credit goes to Jana for saving me about a million hours
 
-# special thanks to Tim Curwick [Twitter: @MadWPoweshell] [Blog: https://www.madwithpowershell.com/2014/10/calculating-patch-tuesday-with.html]
+# special thanks to Tim Curwick [Twitter: @MadWPowershell] [Blog: https://www.madwithpowershell.com/2014/10/calculating-patch-tuesday-with.html]
 # for date calcualtion business, which never fails to totally confuse me
 
 
