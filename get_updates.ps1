@@ -27,7 +27,6 @@ $filename_raw = "$homepath\MS_Monthly_Raw.csv"
 # API generated on my outlook.com email address
 $APIKey = 'your_api_key_here'
 
-
 # import modules. Must be already saved in C:\Users\$env:USERNAME\Documents\Windows PowerShell\Modules
 import-module MSrcSecurityUpdates
 
@@ -41,7 +40,6 @@ Set-MSRCApiKey -ApiKey $APIKey
 # monthOfInterest = "2019-Aug"
 
 #endregion initialise
-
 
 
 #region process
@@ -140,7 +138,6 @@ switch ($resultType)
             'ProductByCVE'  {$productByCVEHashData.Values}
         }
 #>
-
 
 # unfiltered output file for data integrity checking
 write-host "`n{*} Producing raw csv...(for sanity checking)" -ForegroundColor Green
