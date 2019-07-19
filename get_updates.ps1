@@ -7,7 +7,6 @@
 # for date calculation business, which never fails to totally confuse me
 
 # version 0.2
-# Ian Simons, Vulnerability Management Team, Cyber Operations, CSIR
 
 # Will need to install MSrcSecurityUpdates module from
 # https://github.com/microsoft/MSRC-Microsoft-Security-Updates-API
@@ -26,7 +25,7 @@ $filename = "$homepath\MS_Monthly_CVE.csv"
 $filename_raw = "$homepath\MS_Monthly_Raw.csv"
 
 # API generated on my outlook.com email address
-$APIKey = 'ec33d5d2f8d4458ab17b58d62f111bee'
+$APIKey = 'your_api_key_here'
 
 
 # import modules. Must be already saved in C:\Users\$env:USERNAME\Documents\Windows PowerShell\Modules
