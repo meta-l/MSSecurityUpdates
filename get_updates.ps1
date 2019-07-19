@@ -6,6 +6,14 @@
 # special thanks to Tim Curwick [Twitter: @MadWPowershell] [Blog: https://www.madwithpowershell.com/2014/10/calculating-patch-tuesday-with.html]
 # for date calculation business, which never fails to totally confuse me
 
+# version 0.2
+# Ian Simons, Vulnerability Management Team, Cyber Operations, CSIR
+
+# Will need to install MSrcSecurityUpdates module from
+# https://github.com/microsoft/MSRC-Microsoft-Security-Updates-API
+# Will also need to create an APIkey. Create one at the Developer area at 
+# https://portal.msrc.microsoft.com/en-us/security-guidance. Sign in with an outlook.com account 
+# (create one if necessary), then plug the API key into the script.
 
 #region initialise
 
@@ -16,7 +24,9 @@ $currentuser = $env:USERNAME
 $homepath = "C:\Users\$currentuser\documents"
 $filename = "$homepath\MS_Monthly_CVE.csv"
 $filename_raw = "$homepath\MS_Monthly_Raw.csv"
-$APIKey = 'your_api_key_here'
+
+# API generated on my outlook.com email address
+$APIKey = 'ec33d5d2f8d4458ab17b58d62f111bee'
 
 
 # import modules. Must be already saved in C:\Users\$env:USERNAME\Documents\Windows PowerShell\Modules
@@ -28,8 +38,14 @@ Set-MSRCApiKey -ApiKey $APIKey
 # unhide cursor to show activity
 [Console]::CursorSize = 25
 
+# if function getMonthOfInterest appears to fail, use this variable. Update YYYY-MMM as necessary
+# monthOfInterest = "2019-Aug"
+
 #endregion initialise
 
+
+
+#region process
 
 # generates the correct date format for Get-MsrcCvrfDocument to pull the current patch
 function getMonthOfInterest {
@@ -46,9 +62,6 @@ function getMonthOfInterest {
         return $patchmonth
     }
 }
-
-
-#region process
 
 $monthOfInterest = getMonthOfInterest
 
